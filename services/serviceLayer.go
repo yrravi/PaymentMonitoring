@@ -8,6 +8,7 @@ import (
 // PaymentService interface for service methods
 type PaymentService interface {
 	ProcessPayment(payment *models.Payment) error
+	FetchPaymentByReference(paymentReference string) (*models.Payment, error)
 }
 
 // paymentService struct implements the PaymentService interface
@@ -24,4 +25,9 @@ func NewPaymentService(paymentRepo repositories.PaymentRepository) PaymentServic
 func (s *paymentService) ProcessPayment(payment *models.Payment) error {
 	// Business logic can be added here if needed
 	return s.paymentRepo.CreatePayment(payment)
+}
+
+//fetching the Payment data by 'Payment_Reference'
+func (s *paymentService) FetchPaymentByReference(paymentReference string) (*models.Payment, error) {
+    return s.paymentRepo.GetPaymentByReference(paymentReference)
 }

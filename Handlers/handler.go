@@ -6,6 +6,8 @@ import (
 	"payment-Api/services"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/mux"
+	 "encoding/json"
 )
 
 // PaymentHandler struct
@@ -36,4 +38,20 @@ func (h *PaymentHandler) CreatePaymentHandler(c *gin.Context) {
 
 	// Respond with a success message
 	c.JSON(http.StatusCreated, gin.H{"message": "Payment received and saved successfully"})
+}
+
+
+// GetPaymentByReference retrieves a payment by reference
+func (h *PaymentHandler) GetPaymentByReference(w http.ResponseWriter, r *http.Request) {
+    vars := mux.Vars(r)
+    paymentReference := vars["payment_reference"]
+
+    payment, err := h.paymentService.FetchPaymentByReference(paymentReference)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusNotFound)
+        return
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(payment)
 }
