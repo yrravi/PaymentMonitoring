@@ -9,6 +9,8 @@ import (
 type PaymentService interface {
 	ProcessPayment(payment *models.Payment) error
 	FetchPaymentByReference(paymentReference string) (*models.Payment, error)
+	FetchPaymentsBySender(senderAccountRef string) ([]models.Payment, error)
+
 
 }
 
@@ -32,3 +34,9 @@ func (s *paymentService) ProcessPayment(payment *models.Payment) error {
 func (s *paymentService) FetchPaymentByReference(paymentReference string) (*models.Payment, error) {
     return s.paymentRepo.GetPaymentByReference(paymentReference)
 }
+
+//fetching the Payment data by 'sender_acc_ref'
+func (s *paymentService) FetchPaymentsBySender(senderAccountRef string) ([]models.Payment, error){
+	return s.paymentRepo.GetPaymentsBySender(senderAccountRef)
+}
+
