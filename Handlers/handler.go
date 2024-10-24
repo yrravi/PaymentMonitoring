@@ -6,13 +6,15 @@ import (
 	"payment-Api/services"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/mux"
-	 "encoding/json"
+	"fmt"
+	//"github.com/gorilla/mux"
+	// "encoding/json"
 )
 
 // PaymentHandler struct
 type PaymentHandler struct {
 	paymentService services.PaymentService
+	//paymentService services.FetchPaymentByReference
 }
 
 // NewPaymentHandler returns a new PaymentHandler
@@ -41,17 +43,24 @@ func (h *PaymentHandler) CreatePaymentHandler(c *gin.Context) {
 }
 
 
-// GetPaymentByReference retrieves a payment by reference
-func (h *PaymentHandler) GetPaymentByReference(w http.ResponseWriter, r *http.Request) {
-    vars := mux.Vars(r)
-    paymentReference := vars["payment_reference"]
 
+
+// GetPaymentByReference retrieves a payment by reference
+func (h *PaymentHandler) GetPaymentByReference(c *gin.Context) {
+    // Extract query parameter using Gin's context
+	paymentReference := c.DefaultQuery("payment_reference", "")
+	fmt.Println("PAYMENT ",paymentReference)
+
+    // Use the service layer to fetch the payment by reference
     payment, err := h.paymentService.FetchPaymentByReference(paymentReference)
     if err != nil {
-        http.Error(w, err.Error(), http.StatusNotFound)
+        // Respond with a 404 if the payment is not found
+		fmt.Println("PAYMENT ",err)
+
+        c.JSON(404, gin.H{"error": "Payment not found"})
         return
     }
 
-    w.Header().Set("Content-Type", "application/json")
-    json.NewEncoder(w).Encode(payment)
+    // Respond with the payment object
+    c.JSON(200, payment)
 }

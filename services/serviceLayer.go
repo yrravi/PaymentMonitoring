@@ -9,6 +9,7 @@ import (
 type PaymentService interface {
 	ProcessPayment(payment *models.Payment) error
 	FetchPaymentByReference(paymentReference string) (*models.Payment, error)
+
 }
 
 // paymentService struct implements the PaymentService interface

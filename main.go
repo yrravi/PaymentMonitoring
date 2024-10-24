@@ -37,16 +37,17 @@ func main() {
 	// Define the API routes
 	fmt.Println("ENTERS THE payments")
 	r.POST("/payments", paymentHandler.CreatePaymentHandler)
+	r.GET("/getPayments",paymentHandler.GetPaymentByReference)
 
+
+	r.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{"status": "healthy"})
+	})
 	// Start the server
 	
-
+	fmt.Println("Server running on port 8080")
 if err := r.Run(":8080"); err != nil {
-	//fmt.Println("Server running on port 8080")
     log.Fatalf("Error starting server: %v", err)
-}else{
-	log.Fatalf("Server running on the 8080")
 }
 
-	//fmt.Println("ENTERS THE END")
 }

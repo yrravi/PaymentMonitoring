@@ -8,5 +8,5 @@ type Payment struct {
 	Mode               string  `json:"mode"`
 	Currency           string  `json:"currency"`
 	Source             string  `json:"source"`
-	CreatedAt          string  `json:"created_at" gorm:"autoCreateTime"`
+	//CreatedAt          string  `json:"created_at" gorm:"autoCreateTime"`
 }
