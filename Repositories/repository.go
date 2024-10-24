@@ -10,6 +10,7 @@ import (
 type PaymentRepository interface {
 	CreatePayment(payment *models.Payment) error
 	GetPaymentByReference(paymentReference string) (*models.Payment, error)
+	GetPaymentsBySender(senderAccountRef string) ([]models.Payment, error)
 	
 }
 
@@ -35,9 +36,21 @@ func (r *paymentRepository) CreatePayment(payment *models.Payment) error {
 func (r *paymentRepository) GetPaymentByReference(paymentReference string) (*models.Payment, error) {
     var payment models.Payment
     result := r.db.Where("payment_reference = ?", paymentReference).First(&payment)
-	fmt.Println("RESULT",result)
+	//fmt.Println("RESULT",result)
     if result.Error != nil {
         return nil, result.Error
     }
     return &payment, nil
+}
+
+
+//Getpaymentdetails based on the sender_account ref
+func (r *paymentRepository) GetPaymentsBySender(senderAccountRef string) ([]models.Payment,error){
+	var payments []models.Payment
+	result := r.db.Where("sender_account_ref = ?",senderAccountRef).Find(&payments)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	fmt.Println("PAYments",payments)
+	return payments,nil
 }
