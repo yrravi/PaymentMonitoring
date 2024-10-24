@@ -64,3 +64,20 @@ func (h *PaymentHandler) GetPaymentByReference(c *gin.Context) {
     // Respond with the payment object
     c.JSON(200, payment)
 }
+
+
+
+
+//Getpayment details by sender_acc_ref
+func(h *PaymentHandler) FetchPaymentsBySender(c *gin.Context){
+	senderAccref := c.DefaultQuery("sender_account_ref", "")
+
+	payments,err := h.paymentService.FetchPaymentsBySender(senderAccref)
+
+	if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+	c.JSON(http.StatusOK, payments)
+}
