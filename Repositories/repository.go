@@ -11,6 +11,7 @@ type PaymentRepository interface {
 	CreatePayment(payment *models.Payment) error
 	GetPaymentByReference(paymentReference string) (*models.Payment, error)
 	GetPaymentsBySender(senderAccountRef string) ([]models.Payment, error)
+	GetPaymentsByReceiver(receiverAccountRef string) ([]models.Payment,error)
 	
 }
 
@@ -52,5 +53,16 @@ func (r *paymentRepository) GetPaymentsBySender(senderAccountRef string) ([]mode
 		return nil, result.Error
 	}
 	fmt.Println("PAYments",payments)
+	return payments,nil
+}
+
+//Getapyment details based on receiver_account_ref
+func (r *paymentRepository) GetPaymentsByReceiver(receiverAccountRef string) ([]models.Payment,error){
+	var payments []models.Payment
+	result := r.db.Where("receiver_account_ref = ?",receiverAccountRef).Find(&payments)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
 	return payments,nil
 }
