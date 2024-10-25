@@ -10,6 +10,7 @@ type PaymentService interface {
 	ProcessPayment(payment *models.Payment) error
 	FetchPaymentByReference(paymentReference string) (*models.Payment, error)
 	FetchPaymentsBySender(senderAccountRef string) ([]models.Payment, error)
+	FetchPaymentsByReceiver(receiverAccountRef string) ([]models.Payment,error)
 
 
 }
@@ -40,3 +41,7 @@ func (s *paymentService) FetchPaymentsBySender(senderAccountRef string) ([]model
 	return s.paymentRepo.GetPaymentsBySender(senderAccountRef)
 }
 
+//fetching the payment details by 'receiver_acc-ref'
+func (s *paymentService) FetchPaymentsByReceiver(receiverAccountRef string) ([]models.Payment,error){
+	return s.paymentRepo.GetPaymentsByReceiver(receiverAccountRef)
+}
