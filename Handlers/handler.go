@@ -69,7 +69,7 @@ func (h *PaymentHandler) GetPaymentByReference(c *gin.Context) {
 
 
 //Getpayment details by sender_acc_ref
-func(h *PaymentHandler) FetchPaymentsBySender(c *gin.Context){
+func(h *PaymentHandler) FetchPaymentsBySenderRef(c *gin.Context){
 	senderAccref := c.DefaultQuery("sender_account_ref", "")
 
 	payments,err := h.paymentService.FetchPaymentsBySender(senderAccref)
@@ -80,4 +80,17 @@ func(h *PaymentHandler) FetchPaymentsBySender(c *gin.Context){
     }
 
 	c.JSON(http.StatusOK, payments)
+}
+
+//Get Payment details by receiver_acc_ref
+func(h *PaymentHandler) FetchPaymentsByReceiverRef(c *gin.Context){
+	receiverAccref := c.DefaultQuery("receiver_account_ref","")
+	payments,err := h.paymentService.FetchPaymentsByReceiver(receiverAccref)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+	}
+
+	c.JSON(http.StatusOK,payments)
 }
