@@ -38,8 +38,8 @@ func main() {
 	fmt.Println("ENTERS THE payments")
 	r.POST("/payments", paymentHandler.CreatePaymentHandler)
 	r.GET("/getPayments",paymentHandler.GetPaymentByReference)
-	r.GET("/payments/sender", paymentHandler.FetchPaymentsBySender) 
-
+	r.GET("/payments/sender", paymentHandler.FetchPaymentsBySenderRef) 
+    r.GET("payments/receiver",paymentHandler.FetchPaymentsByReceiverRef)
 
 	// r.GET("/health", func(c *gin.Context) {
 	// 	c.JSON(200, gin.H{"status": "healthy"})
