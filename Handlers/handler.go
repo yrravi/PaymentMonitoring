@@ -94,3 +94,15 @@ func(h *PaymentHandler) FetchPaymentsByReceiverRef(c *gin.Context){
 
 	c.JSON(http.StatusOK,payments)
 }
+
+//Get total payments by receiver_acc_ref
+func(h *PaymentHandler) FetchTotalAmountByReceiver(c *gin.Context){
+	receiverAccountRef := c.DefaultQuery("receiver_account_ref","")
+
+	totalPayments,err := h.paymentService.FetchTotalAmountByReceiver(receiverAccountRef)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error" : err.Error()})
+	}
+
+	c.JSON(http.StatusOK,gin.H{"totalPayments": totalPayments})
+}
