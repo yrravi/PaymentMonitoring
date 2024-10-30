@@ -11,6 +11,7 @@ type PaymentService interface {
 	FetchPaymentByReference(paymentReference string) (*models.Payment, error)
 	FetchPaymentsBySender(senderAccountRef string) ([]models.Payment, error)
 	FetchPaymentsByReceiver(receiverAccountRef string) ([]models.Payment,error)
+	FetchTotalAmountByReceiver(receiverAccountRef string) (float64, error) 
 
 
 }
@@ -44,4 +45,9 @@ func (s *paymentService) FetchPaymentsBySender(senderAccountRef string) ([]model
 //fetching the payment details by 'receiver_acc-ref'
 func (s *paymentService) FetchPaymentsByReceiver(receiverAccountRef string) ([]models.Payment,error){
 	return s.paymentRepo.GetPaymentsByReceiver(receiverAccountRef)
+}
+
+//fetch the total payment by 'receiver_acc_ref
+func (s *paymentService) FetchTotalAmountByReceiver(receiverAccountRef string) (float64,error){
+	return s.paymentRepo.GetTotalAmountByReceiver(receiverAccountRef)
 }
